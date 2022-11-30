@@ -30,3 +30,12 @@
 .site-layout .site-layout-background {
     background: #fff;
 }
+
+.headerBox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.headerBox .header-btn{
+    margin-right: 20px;
+}

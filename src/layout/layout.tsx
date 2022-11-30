@@ -5,7 +5,7 @@ import {
     UserOutlined,
     VideoCameraOutlined,
 } from '@ant-design/icons';
-import { Layout, Menu } from 'antd';
+import { Button, Layout, Menu } from 'antd';
 import React, { useState } from 'react';
 import './layout.css';
 import { menus } from './layout.config';
@@ -33,6 +33,10 @@ const App: React.FC = () => {
         history.push(key);
     }
 
+    // 退出登陆
+    const logout = () => {
+        history.push('/login');
+    }
 
 
     return (
@@ -51,10 +55,18 @@ const App: React.FC = () => {
             </Sider>
             <Layout className="site-layout">
                 <Header className="site-layout-background" style={{ padding: 0 }}>
-                    {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-                        className: 'trigger',
-                        onClick: () => setCollapsed(!collapsed),
-                    })}
+                    <div className='headerBox'>
+                        {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+                            className: 'trigger',
+                            onClick: () => setCollapsed(!collapsed),
+                        })}
+                        <Button
+                            className='header-btn'
+                            type='link'
+                            onClick={logout}
+                        >退出登陆</Button>
+                    </div>
+
                 </Header>
                 <Content
                     className="site-layout-background"
@@ -70,7 +82,7 @@ const App: React.FC = () => {
                     <Route path="/activityManage">
                         <ActivityManage></ActivityManage>
                     </Route>
-                     {/* 注意：这种写法上需要带上父级路径 */}
+                    {/* 注意：这种写法上需要带上父级路径 */}
                     <Route path="/userManage/registerUserCheck">
                         <RegisterUserCheck></RegisterUserCheck>
                     </Route>
