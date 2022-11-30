@@ -2,12 +2,17 @@ import './Login.scss';
 import { Button, Checkbox, Form, Input, Card } from 'antd';
 
 import { ILoginParams } from './Login.type';
+import API from '../../api/index';
 
 export default function Login() {
-    const login = (values: ILoginParams) => {
-        console.log(values);
+    const login = async (values: ILoginParams) => {
+        const data = await API.login(values);
+        // 调用完登陆接口后，拿到 token 和 相关角色
+        // token 全局封装到 axios
+        // 使用角色过滤对应的菜单
+        // 最后，跳转到活动管理页面
     }
-    
+
     return (
         <div id="login">
 
