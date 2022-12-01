@@ -45,6 +45,10 @@ const App: React.FC = () => {
 
     // 退出登陆
     const logout = () => {
+        // 清除token
+        // token 存到了 dva 里面，并且 dva 做了持久化，存到了 localstorage 里面，
+        // 所以退出登陆的时候，只需要清空一下 localstorage 就可以了
+        localStorage.removeItem('global');
         history.push('/login');
     }
 

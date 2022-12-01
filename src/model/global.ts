@@ -44,6 +44,31 @@ export default {
         save(state, action: Partial<IPayload<any>>) {
             return { ...state, ...action.payload };
         }
+    },
+
+
+
+    // subscriptions 方法：监听路由变化
+    subscriptions: {
+        setup({ history }) {
+            // 每次路由变化都会调用这个方法
+            history.listen((router) => {
+                const globalLocal = JSON.parse(localStorage.getItem("global") || "{}");
+                
+                // 避免进入死循环，定义一个白名单：不需要校验 token 的有哪些路由
+                // 要加上白名单的校验，如果不是在 白名单里面才校验是否存在 token
+                const ignoreUrls = ['/login'];
+
+                // 如果本地没有token，则代表用户未登陆，需要跳转到登陆页面
+                if (!globalLocal.token && !ignoreUrls.includes(router.pathname)) {
+                    history.push('/login');
+                }
+
+            })
+        }
     }
+
+
+
 
 } as Model
