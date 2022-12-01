@@ -9,10 +9,6 @@ import './layout.css';
 import { Route, Router } from 'dva/router';
 import { useHistory, useSelector } from 'dva';
 
-import BannerManage from '../pages/bannerManage/BannerManage';
-import ActivityManage from '../pages/activityManage/ActivityManage';
-import AdminUserManage from '../pages/adminUserManage/AdminUserManage';
-import RegisterUserCheck from '../pages/registerUserCheck/RegisterUserCheck';
 
 
 import { MenuInfo } from 'rc-menu/lib/interface';
@@ -26,7 +22,16 @@ const App: React.FC = () => {
     const history = useHistory();
 
     // 拿到当前有权限的菜单
-    const {currentMenus} = useLayout();
+    const { currentMenus } = useLayout();
+
+    // 路由动态渲染
+    const routerRender = (menuArr = currentMenus) => {
+        menuArr.map(item => (
+            <Route component={item.component} path={item.key + ''}>
+                {item.children && routerRender(item.children)}
+            </Route>
+        ))
+    }
 
     // 获取到 globalState 里面的 rules ，根据不同角色显示不同菜单
     const globalState = useSelector<{ global: IGlobalState }, IGlobalState>(({ global }) => global);
@@ -81,19 +86,20 @@ const App: React.FC = () => {
                         minHeight: 280,
                     }}
                 >
-                    <Route path="/bannerManage">
+                    {routerRender()!}
+                    {/* <Route path="/bannerManage">
                         <BannerManage></BannerManage>
                     </Route>
                     <Route path="/activityManage">
                         <ActivityManage></ActivityManage>
-                    </Route>
-                    {/* 注意：这种写法上需要带上父级路径 */}
+                    </Route> */}
+                    {/* 注意：这种写法上需要带上父级路径
                     <Route path="/userManage/registerUserCheck">
                         <RegisterUserCheck></RegisterUserCheck>
                     </Route>
                     <Route path="/userManage/adminUserManage">
                         <AdminUserManage></AdminUserManage>
-                    </Route>
+                    </Route> */}
                 </Content>
             </Layout>
         </Layout>

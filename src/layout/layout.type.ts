@@ -3,5 +3,6 @@ import { Role } from "../type";
 
 export interface IMenu extends MenuItemType {
     roles: Role[],
-    children?: IMenu[]
+    children?: IMenu[],
+    component?: React.ComponentType<any>
 }
