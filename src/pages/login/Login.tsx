@@ -10,7 +10,7 @@ import { IGlobalState } from '../../model/type';
 
 export default function Login() {
     const dispatch = useDispatch();
-    const globalState = useSelector<{ gloal: IGlobalState }, IGlobalState>(({ gloal }) => gloal);
+    const globalState = useSelector<{ global: IGlobalState }, IGlobalState>(({ global }) => global);
 
     const login = async (values: ILoginParams) => {
         const data = await API.login(values);

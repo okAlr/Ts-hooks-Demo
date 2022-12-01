@@ -33,7 +33,6 @@ axios.interceptors.request.use(config => {
     if (config.headers) {
         const globalLocal = JSON.parse(localStorage.getItem('global') || "{}");
         config.headers['Authorization'] = globalLocal.token;
-
     }
     return config;
 })
