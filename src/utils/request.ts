@@ -27,4 +27,15 @@ axios.interceptors.response.use((response: AxiosResponse<IBaseResponse<any>>) =>
     return response.data.data;
 })
 
+
+// 在每次请求前带上 token
+axios.interceptors.request.use(config => {
+    if (config.headers) {
+        const globalLocal = JSON.parse(localStorage.getItem('global') || "{}");
+        config.headers['Authorization'] = globalLocal.token;
+
+    }
+    return config;
+})
+
 export default axios;
