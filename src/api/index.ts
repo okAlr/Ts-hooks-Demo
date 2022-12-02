@@ -1,3 +1,4 @@
+import { Key } from 'antd/lib/table/interface';
 import { IActivity, IActivityParams } from '../pages/activityManage/activityManage.type';
 import { ILoginParams, ILoginResponse } from '../pages/login/Login.type';
 import { IBasePagination } from '../type';
@@ -20,6 +21,15 @@ export default {
         return request.post<IActivityParams, IBasePagination<IActivity>>(
             "/admin/base/activityManage/page",
             data
+        )
+    },
+
+
+    // 删除活动
+    delActivity(ids: Key[]) {
+        return request.post<Key[], {}>(
+            "/admin/base/activityManage/delete",
+            ids
         )
     }
 }

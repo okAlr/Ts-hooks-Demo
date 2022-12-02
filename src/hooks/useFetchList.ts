@@ -20,8 +20,14 @@ export default function useFetchList<Response>(props: IFetchListProps<Response>)
         getData();
     }, [filterParams])
 
+    // 获取数据
     const getData = async () => {
         const { list, pagination } = await props.API(filterParams);
+
+        list.forEach((item: any) => {
+            item.key = item.id;
+        })
+
         setDataSource(list);
         setTotal(pagination.total);
     }

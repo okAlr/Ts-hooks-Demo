@@ -5,12 +5,25 @@ import { IActivity } from "./activityManage.type";
 
 import useFetchList from "../../hooks/useFetchList";
 import API from '../../api';
+import useDeldata from "../../hooks/useDelData";
 
 export default function ActivityManage() {
 
     // 调用列表hook，拿到可渲染的数据
     const { dataSource, total, filterParams, setFilterParams } = useFetchList<IActivity>({
         API: API.getActivitys
+    })
+
+    // 删除接口
+    const { ids, setIds, delData } = useDeldata({
+        API: API.delActivity,
+        // 删除成功之后，需要重置分页参数
+        success: () => {
+            setFilterParams({
+                ...filterParams,
+                page: 1
+            })
+        }
     })
 
     const columns: ColumnsType<IActivity> = [
@@ -73,11 +86,11 @@ export default function ActivityManage() {
             title: "操作",
             dataIndex: "id",
             key: "id",
-            render: () => {
+            render: (text, item) => {
                 return (
                     <Space>
                         <Button type="primary">编辑</Button>
-                        <Button danger>删除</Button>
+                        <Button danger onClick={() => delData([item.id])}>删除</Button>
                         <Button>查看报名人数</Button>
                     </Space>
 
@@ -106,11 +119,10 @@ export default function ActivityManage() {
             <Space>
                 <Button>刷新</Button>
                 <Button type="primary">新增</Button>
-                <Button danger>删除 </Button>
+                <Button danger onClick={() => delData()}>删除 </Button>
 
                 <Radio.Group
                     defaultValue=""
-                    size="large"
                     onChange={(e) => { // 改变筛选项，就会重新发送一次请求
                         setFilterParams({
                             ...filterParams,
@@ -145,6 +157,13 @@ export default function ActivityManage() {
                 dataSource={dataSource}
                 scroll={{
                     x: 1500
+                }}
+                // 多选
+                rowSelection={{
+                    type: 'checkbox',
+                    onChange: (keys) => {
+                        setIds(keys);
+                    }
                 }}
                 pagination={{
                     total,
