@@ -3,7 +3,15 @@ import { ColumnsType } from "antd/lib/table";
 import { activityStatus } from "./activityManage.config";
 import { IActivity } from "./activityManage.type";
 
+import useFetchList from "../../hooks/useFetchList";
+import API from '../../api';
+
 export default function ActivityManage() {
+
+    // 调用列表hook，拿到可渲染的数据
+    const { dataSource, total, filterParams, setFilterParams } = useFetchList<IActivity>({
+        API: API.getActivitys
+    })
 
     const columns: ColumnsType<IActivity> = [
         {
@@ -100,7 +108,16 @@ export default function ActivityManage() {
                 <Button type="primary">新增</Button>
                 <Button danger>删除 </Button>
 
-                <Radio.Group defaultValue="a">
+                <Radio.Group
+                    defaultValue=""
+                    size="large"
+                    onChange={(e) => { // 改变筛选项，就会重新发送一次请求
+                        setFilterParams({
+                            ...filterParams,
+                            page: 1, // 重置分页参数
+                            activityStatus: e.target.value
+                        } as any)
+                    }}>
                     {
                         activityStatus.map((item, index) => (
                             <Radio.Button key={index} value={item.value}>
@@ -110,10 +127,37 @@ export default function ActivityManage() {
                     }
                 </Radio.Group>
 
-                <Input placeholder="请输入活动名称"></Input>
+                {/* 模糊搜索 */}
+                <Input
+                    onChange={(e) => {
+                        setFilterParams({
+                            ...filterParams,
+                            page: 1,
+                            activityName: e.target.value
+                        } as any)
+                    }}
+                    placeholder="请输入活动名称"></Input>
             </Space>
 
-            <Table style={{ marginTop: '20px' }} columns={columns} dataSource={[]}>
+            <Table
+                style={{ marginTop: '20px' }}
+                columns={columns}
+                dataSource={dataSource}
+                scroll={{
+                    x: 1500
+                }}
+                pagination={{
+                    total,
+                    pageSize: filterParams.size,
+                    current: filterParams.page,
+                    // 实现分页
+                    onChange: (page) => {
+                        setFilterParams({
+                            ...filterParams,
+                            page
+                        })
+                    }
+                }}>
 
             </Table>
         </div>

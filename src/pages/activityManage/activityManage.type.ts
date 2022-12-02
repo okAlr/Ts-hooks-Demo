@@ -1,3 +1,5 @@
+import { BaseParams } from "../../type";
+
 // 活动管理列表
 export interface IActivity {
     // 活动人数上限
@@ -23,4 +25,11 @@ export interface IActivity {
     wx: string;
     // 活动封面
     activityImg: string;
+}
+
+
+
+export interface IActivityParams extends BaseParams {
+    activityStatus: string;
+    activityName: string
 }

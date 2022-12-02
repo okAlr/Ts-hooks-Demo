@@ -43,3 +43,10 @@ export interface IBasePagination<T> {
     }
 
 }
+
+
+// 分页参数
+export class BaseParams {
+    public page = 1;
+    public size = 3
+}
