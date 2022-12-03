@@ -90,4 +90,18 @@ export default {
         return request.post<Pick<IUser, 'checking' | 'id'>, {}>(`/admin/base/user/update`, data);
     },
 
+    createUser(data: IUser) {
+        return request.post<IUser, {}>(`/admin/base/user/add`, data);
+    },
+
+    updateUser(data: IUser) {
+        return request.post<IUser, {}>(`/admin/base/user/update`, data);
+    },
+
+    getUserDetail(id: string) {
+        return request.get<String, IUser>(`/admin/base/user/info?id=${id}`);
+    },
+
+
+
 }
