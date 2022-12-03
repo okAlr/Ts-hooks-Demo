@@ -31,5 +31,12 @@ export default {
             "/admin/base/activityManage/delete",
             ids
         )
+    },
+
+
+    getCosAutograph() {
+        return request.post<{}, {}>(
+            "/admin/base/comm/cos/autograph",
+        )
     }
 }

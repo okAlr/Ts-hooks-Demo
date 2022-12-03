@@ -1,13 +1,18 @@
-import { Button, Input, Radio, Space, Image, Table } from "antd";
+import { Button, Input, DatePicker, Radio, Space, Image, Table, Modal, Form } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { activityStatus } from "./activityManage.config";
 import { IActivity } from "./activityManage.type";
+import UploadImg from '../../components/UploadImg';
 
 import useFetchList from "../../hooks/useFetchList";
 import API from '../../api';
 import useDeldata from "../../hooks/useDelData";
+import { useState } from "react";
+
+const { RangePicker } = DatePicker;
 
 export default function ActivityManage() {
+    const [isModal, setIsmodal] = useState(false);
 
     // 调用列表hook，拿到可渲染的数据
     const { dataSource, total, filterParams, setFilterParams } = useFetchList<IActivity>({
@@ -118,8 +123,8 @@ export default function ActivityManage() {
             {/* 头部筛选栏 */}
             <Space>
                 <Button>刷新</Button>
-                <Button type="primary">新增</Button>
-                <Button danger onClick={() => delData()}>删除 </Button>
+                <Button type="primary" onClick={() => setIsmodal(true)}>新增</Button>
+                <Button danger onClick={() => delData()}>删除</Button>
 
                 <Radio.Group
                     defaultValue=""
@@ -179,6 +184,34 @@ export default function ActivityManage() {
                 }}>
 
             </Table>
+
+
+            {/* 新增活动的弹窗页面 */}
+            <Modal title="新增" open={isModal}>
+                <Form labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
+                    <Form.Item
+                        label="活动名"
+                        name="activityName"
+                        rules={[{ required: true, message: "请输入活动名" }]}>
+                        <Input></Input>
+                    </Form.Item>
+                    <Form.Item label="活动上限" name="activityMax">
+                        <Input></Input>
+                    </Form.Item>
+                    <Form.Item label="活动时间" name="activityDate">
+                        <RangePicker />
+                    </Form.Item>
+                    <Form.Item label="主办方" name="business">
+                        <Input></Input>
+                    </Form.Item>
+                    <Form.Item label="活动封面" name="activityImg">
+                        <UploadImg></UploadImg>
+                    </Form.Item>
+                    <Form.Item label="活动详情" name="activytyDesc">
+                        <Input.TextArea />
+                    </Form.Item>
+                </Form>
+            </Modal>
         </div>
     )
 }
