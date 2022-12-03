@@ -8,11 +8,15 @@ import useFetchList from "../../hooks/useFetchList";
 import API from '../../api';
 import useDeldata from "../../hooks/useDelData";
 import { useState } from "react";
+import useInsert from "../../hooks/useInsert";
+import { formatDate } from "../../utils/formatDate";
+
+import moment from 'moment';
 
 const { RangePicker } = DatePicker;
 
 export default function ActivityManage() {
-    const [isModal, setIsmodal] = useState(false);
+    const [form] = Form.useForm(); // form 是表单实例
 
     // 调用列表hook，拿到可渲染的数据
     const { dataSource, total, filterParams, setFilterParams } = useFetchList<IActivity>({
@@ -28,6 +32,32 @@ export default function ActivityManage() {
                 ...filterParams,
                 page: 1
             })
+        }
+    })
+
+    // 新增和编辑
+    const { handleOk, isModal, setIsmodal, setDataInfo } = useInsert({
+        form,
+        convertData: (data) => {
+            if (data.activityDate) {
+                data.activityStartDate = formatDate(data.activityDate[0]);
+                data.activityEndDate = formatDate(data.activityDate[1]);
+            }
+            return data;
+        },
+        createData: API.createActivity,
+        updateData: API.updateActivity,
+        success: () => {
+            setFilterParams({ ...filterParams, page: 1 })
+        },
+        getDetail: API.getActivityDetail,
+        convertDetailData: (data) => {
+            // 改变时间
+            data.activityDate = [
+                moment(data.activityStartDate, "YYYY/MM/DD"),
+                moment(data.activityEndDate, "YYYY/MM/DD")
+            ];
+            return data;
         }
     })
 
@@ -94,7 +124,7 @@ export default function ActivityManage() {
             render: (text, item) => {
                 return (
                     <Space>
-                        <Button type="primary">编辑</Button>
+                        <Button type="primary" onClick={() => setDataInfo(item.id)}>编辑</Button>
                         <Button danger onClick={() => delData([item.id])}>删除</Button>
                         <Button>查看报名人数</Button>
                     </Space>
@@ -115,6 +145,12 @@ export default function ActivityManage() {
             case "2":
                 return "已结束";
         }
+    }
+
+
+    // 取消新增
+    const handleCancel = () => {
+        setIsmodal(false);
     }
 
 
@@ -187,8 +223,8 @@ export default function ActivityManage() {
 
 
             {/* 新增活动的弹窗页面 */}
-            <Modal title="新增" open={isModal}>
-                <Form labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
+            <Modal title="新增" open={isModal} onOk={handleOk} onCancel={handleCancel}>
+                <Form form={form} labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
                     <Form.Item
                         label="活动名"
                         name="activityName"

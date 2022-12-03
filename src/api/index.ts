@@ -33,10 +33,29 @@ export default {
         )
     },
 
-
+    // 获取 cos 的token
     getCosAutograph() {
         return request.post<{}, {}>(
             "/admin/base/comm/cos/autograph",
         )
+    }，
+
+
+    // 创建活动
+    createActivity(data: IActivity) {
+        return request.post<IActivity, {}>(
+            "/admin/base/activityManage/add", data)
+    },
+
+
+    // 更新活动
+    updateActivity(data: IActivity) {
+        return request.post<IActivity, {}>(
+            "/admin/base/activityManage/update", data)
+    },
+
+    // 获取详情
+    getActivityDetail(id: string) {
+        return request.get<string, IActivity>(`/admin/base/activityManage/info?id=${id}`)
     }
 }

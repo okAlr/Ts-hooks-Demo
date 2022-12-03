@@ -1,4 +1,5 @@
 import { BaseParams } from "../../type";
+import { Moment } from 'moment';
 
 // 活动管理列表
 export interface IActivity {
@@ -25,6 +26,7 @@ export interface IActivity {
     wx: string;
     // 活动封面
     activityImg: string;
+    activityDate?: Moment[]
 }
 
 
