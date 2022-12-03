@@ -1,46 +1,81 @@
-# Getting Started with Create React App
+# 特点及收获
+- 提升了自定义 hooks 封装能力，暴露切面方面想的更全面，hook封装能力加强
+- 在项目中尽量对所有需要的类型进行了声明，强Ts 使用，运用Ts 泛型
+- 知识面的拓展：了解了 dva，COS 等新的一些知识点
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## api
+- 请求层，所有的接口方法都写在 API 里面
+- 后期项目更大，在 API 文件夹中再划分模块
 
-In the project directory, you can run:
+## components
+- 存放全局组件
 
-### `npm start`
+## hooks
+- 存放全局hooks
+- 删除的 hooks
+- 获取数据的 hooks
+- 插入的 hooks
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## layout
+- 基本结构目录
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
-### `npm test`
+## model
+- 存放全局状态的目录
+- 并且对model做了持久化
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## page
+- 页面代码
 
-### `npm run build`
+## type
+- 全局类型
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## utils
+- 通用方法
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+## axios
+- 每次请求前都会携带token
+- 每次返回都会根据业务返回的 code 做出全局错误的拦截
+- 每次请求的时候，都需要传两个泛型，一个是参数的类型，另一个是返回值的类型
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## dva
+- 对 dva 做了持久化，每次 state 变化的时候，我们都会存到 localstorage 里面，
+  因为在 global 模块里面存的数据，不希望刷新就会丢失
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- 做未登陆状态的拦截，在 subscriptions 里面，使用路由的 listen 方法监听路由的变化，
+每次变化的时候，判断本地有没有 token，没有则返回登陆页面
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+## 权限
+- 手动创建一个菜单树，并且菜单树上有对应的权限，以及菜单对应的组件，使用递归进行
+  筛选，并且筛选路由，没有权限的路由不渲染
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 自定义 hooks
+
+- 插入数据的 hook
+    - 完成插入数据的通用功能
+      - 获取表单数据
+      - 暴露出个性化定制数据的切面
+      - 调用插入数据的接口
+      - 提示插入成功
+      - 暴露出插入成功的回调
+
+- 删除的 hook
+    - 完成删除数据的功能
+      - 确定好要删除数据的 id
+      - 调用 confirm 方法，提醒用户
+      - OK 的时候，调用接口，并提示成功
+      - 暴露出成功的回调
+
+- 获取数据的 hook
+    - 获取到列表数据，以及筛选列表
+      - 确定好筛选参数
+      - 每次参数变化的时候，都需要调用一下列表接口
+      - 把拿到的列表数据返回出去
+      - 再暴露出修改参数的钩子
+
