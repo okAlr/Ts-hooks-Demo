@@ -45,7 +45,7 @@ export default function useInsert<T>(props: IInsert<T>) {
         let data = await props.getDetail!(id);
 
         // 暴露出一个可以操作数据的方法
-        (data as any) = props.convertDetailData && props.convertDetailData(data)
+        (data as any) = props.convertDetailData && props.convertDetailData(data);
 
         // 给表单回显数据
         props.form.setFieldsValue(data as any);

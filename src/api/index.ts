@@ -1,7 +1,8 @@
 import { Key } from 'antd/lib/table/interface';
 import { IActivity, IActivityParams } from '../pages/activityManage/activityManage.type';
+import { IBanner } from '../pages/bannerManage/bannerManage.type';
 import { ILoginParams, ILoginResponse } from '../pages/login/Login.type';
-import { IBasePagination } from '../type';
+import { BasePageParams, IBasePagination } from '../type';
 import request from '../utils/request';
 // 如果业务复杂的话，可以分割模块，现在我们可以整个 api 作为一层
 
@@ -38,7 +39,7 @@ export default {
         return request.post<{}, {}>(
             "/admin/base/comm/cos/autograph",
         )
-    }，
+    },
 
 
     // 创建活动
@@ -57,5 +58,22 @@ export default {
     // 获取详情
     getActivityDetail(id: string) {
         return request.get<string, IActivity>(`/admin/base/activityManage/info?id=${id}`)
+    },
+
+    // 获取轮播图列表
+    getBanners(data: BasePageParams) {
+        return request.post<BasePageParams, IBasePagination<IBanner>>(`/admin/base/banner/page`)
+    },
+
+
+    // 删除轮播图列表
+    delBanners(ids: Key[]) {
+        return request.post<Key[], {}>(`/admin/base/banner/delete`, { ids })
+    },
+
+    //创建轮播图列表
+    createBanners(data: IBanner) {
+        return request.post<IBanner, {}>(`/admin/base/banner/add`, data);
     }
+
 }

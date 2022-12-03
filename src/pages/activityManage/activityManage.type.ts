@@ -1,4 +1,4 @@
-import { BaseParams } from "../../type";
+import { BasePageParams } from "../../type";
 import { Moment } from 'moment';
 
 // 活动管理列表
@@ -31,7 +31,7 @@ export interface IActivity {
 
 
 
-export interface IActivityParams extends BaseParams {
+export interface IActivityParams extends BasePageParams {
     activityStatus: string;
     activityName: string
 }

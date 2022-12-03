@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BaseParams } from "../type";
+import { BasePageParams } from "../type";
 import { IFetchListProps } from "./type";
 
 export default function useFetchList<Response>(props: IFetchListProps<Response>) {
@@ -8,7 +8,7 @@ export default function useFetchList<Response>(props: IFetchListProps<Response>)
     const [total, setTotal] = useState(0);
 
     // 定义分页参数
-    const [filterParams, setFilterParams] = useState(new BaseParams());
+    const [filterParams, setFilterParams] = useState(new BasePageParams());
 
     /***
      * 请求列表接口
@@ -36,6 +36,7 @@ export default function useFetchList<Response>(props: IFetchListProps<Response>)
         dataSource,
         total,
         filterParams,
-        setFilterParams
+        setFilterParams,
+        getData
     }
 }
