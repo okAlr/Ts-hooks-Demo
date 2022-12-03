@@ -8,7 +8,7 @@ export default function useFetchList<Response>(props: IFetchListProps<Response>)
     const [total, setTotal] = useState(0);
 
     // 定义分页参数
-    const [filterParams, setFilterParams] = useState(new BasePageParams());
+    const [filterParams, setFilterParams] = useState({ ...new BasePageParams(), ...(props.defaultParams || {}) });
 
     /***
      * 请求列表接口

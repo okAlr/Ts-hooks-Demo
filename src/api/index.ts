@@ -2,6 +2,7 @@ import { Key } from 'antd/lib/table/interface';
 import { IActivity, IActivityParams } from '../pages/activityManage/activityManage.type';
 import { IBanner } from '../pages/bannerManage/bannerManage.type';
 import { ILoginParams, ILoginResponse } from '../pages/login/Login.type';
+import { IUser, IUserParams } from '../pages/registerUserCheck/registerUserCheck.type';
 import { BasePageParams, IBasePagination } from '../type';
 import request from '../utils/request';
 // 如果业务复杂的话，可以分割模块，现在我们可以整个 api 作为一层
@@ -30,7 +31,7 @@ export default {
     delActivity(ids: Key[]) {
         return request.post<Key[], {}>(
             "/admin/base/activityManage/delete",
-            ids
+            { ids }
         )
     },
 
@@ -74,6 +75,19 @@ export default {
     //创建轮播图列表
     createBanners(data: IBanner) {
         return request.post<IBanner, {}>(`/admin/base/banner/add`, data);
-    }
+    },
+
+    // 用户审核
+    getUsers(data: IUserParams) {
+        return request.post<IBanner, IBasePagination<IUser>>(`/admin/base/user/page`, data);
+    },
+
+    delUser(ids: Key[]) {
+        return request.post<Key[], {}>(`/admin/base/user/delete`, { ids });
+    },
+
+    checkUser(data: Pick<IUser, 'checking' | 'id'>) {
+        return request.post<Pick<IUser, 'checking' | 'id'>, {}>(`/admin/base/user/update`, data);
+    },
 
 }
